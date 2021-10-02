@@ -16,7 +16,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   covid_index_states <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
-  #covid_index_states$date <- as.character(covid_index_states$date)
+  covid_index_states$date <- as.character(covid_index_states$date)
   
   state_index <- reactive(covid_index_states %>% filter(state == input$statedex) %>% 
                             mutate(delta_cases = 
@@ -27,7 +27,7 @@ server <- function(input, output, session) {
   
   output$plot <- renderPlot({
     ggplot(state_index(),
-           aes(x = date,
+           aes(x = as.Date(date),
                y = cases))+
       geom_line()+
       scale_x_date(date_breaks = "1 month",
