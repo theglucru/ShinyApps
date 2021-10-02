@@ -11,7 +11,7 @@ ui <- fluidPage(
   column(6, plotOutput("plot", width = "800px")
   ),
   
-  column(10, tableOutput("table"))
+  column(9, tableOutput("table"))
 )
 
 server <- function(input, output, session) {
@@ -24,7 +24,6 @@ server <- function(input, output, session) {
                             mutate(delta_deaths = 
                                      coalesce(deaths - lag(deaths, order_by = state), 1))
                           )
-  
   
   output$plot <- renderPlot({
     ggplot(state_index(),
@@ -39,7 +38,7 @@ server <- function(input, output, session) {
            title = "Total covid Cases per state")
   }, res = 96)
   
-  output$table <- renderTable(state_index %>% tail(5))
+  output$table <- renderTable(state_index() %>% tail(5))
   
 }
 
