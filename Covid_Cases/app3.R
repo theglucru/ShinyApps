@@ -3,17 +3,14 @@ library(tidyverse)
 library(lubridate)
 
 ui <- fluidPage(
-  
-  fluidRow(
-    column(3, selectInput("statedex", "Select state:", state.name)),
-    column(3, selectInput("plottype", "Select plot:", c("cases", "delta_cases")))
-  ),
-  
-  
-  column(6, plotOutput("plot", width = "800px")
-  ),
-  
-  column(9, tableOutput("table"))
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("statedex", "Select state:", state.name),
+      selectInput("plottype", "Select plot:", c("cases", "delta_cases")), width = 3
+    ),
+    mainPanel(plotOutput("plot", width = "800px"),
+              tableOutput("table"))
+  )
 )
 
 server <- function(input, output, session) {
