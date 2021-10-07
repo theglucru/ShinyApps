@@ -6,7 +6,7 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput("statedex", "Select state:", state.name),
-      selectInput("plottype", "Select plot:", c("cases", "delta_cases")), width = 3
+      selectInput("plottype", "Select plot:", c("cases", "delta_cases", "deaths", "delta_deaths")), width = 3
     ),
     mainPanel(plotOutput("plot", width = "800px"),
               tableOutput("table"))
@@ -20,7 +20,7 @@ server <- function(input, output, session) {
   state_index <- reactive(covid_index_states %>% filter(state == input$statedex) %>% 
                             mutate(delta_cases = 
                                      coalesce(cases - lag(cases, order_by = state), 1)) %>% 
-                            mutate(delta_Deaths = 
+                            mutate(delta_deaths = 
                                      coalesce(deaths - lag(deaths, order_by = state), 1)) %>% 
                             filter(delta_cases >= 1) # Delta > 0 to account for holidays where nothing is reported and random negative deltas
                           )
