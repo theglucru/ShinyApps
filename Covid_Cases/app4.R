@@ -35,7 +35,10 @@ server <- function(input, output, session) {
            aes(x = as.Date(date),
                y = eval(parse(text = input$plottype))))+
       geom_line()+
+<<<<<<< HEAD
       theme_bw()+
+=======
+>>>>>>> 9a8ae6997099e2d15bf3351b31d64451c44ee9ce
       scale_x_date(date_breaks = "1 month",
                    date_labels = "%m/%y")+
       scale_y_continuous(n.breaks = 10)+
