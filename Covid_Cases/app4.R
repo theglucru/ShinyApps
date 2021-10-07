@@ -8,8 +8,12 @@ ui <- fluidPage(
       selectInput("statedex", "Select state:", state.name),
       selectInput("plottype", "Select plot:", c("cases", "delta_cases", "deaths", "delta_deaths")), width = 3
     ),
-    mainPanel(plotOutput("plot", width = "800px"),
-              tableOutput("table"))
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Plot", plotOutput("plot", width = "800px")),
+        tabPanel("Table", tableOutput("table"))
+      )
+    )
   )
 )
 
@@ -33,13 +37,13 @@ server <- function(input, output, session) {
       geom_line()+
       scale_x_date(date_breaks = "1 month",
                    date_labels = "%m/%y")+
-      #scale_y_continuous(n.breaks = 15)+
+      scale_y_continuous(n.breaks = 10)+
       labs(x = "Date",
            y = input$plottype,
            title = paste0(input$plottype, " per state"))
   }, res = 96)
   
-  output$table <- renderTable(state_index() %>% tail(5))
+  output$table <- renderTable(state_index() %>% tail(10))
   
 }
 
