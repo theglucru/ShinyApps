@@ -1,4 +1,4 @@
-library(shiny)
+library(shiny) 
 library(tidyverse)
 library(lubridate)
 
@@ -15,7 +15,7 @@ ui <- fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Plot", plotOutput("plot", width = "800px")),
-        tabPanel("Table", tableOutput("table"))
+        tabPanel("Table", dataTableOutput("table"))
       )
     )
   )
@@ -48,7 +48,8 @@ server <- function(input, output, session) {
            title = paste0(input$plottype, " per state"))
   }, res = 96)
   
-  output$table <- renderTable(state_index() %>% tail(10))
+  output$table <- renderDataTable(state_index(), options = list(pageLength = 10,
+                                                                ordering = NULL))
   
 }
 
