@@ -10,7 +10,7 @@ ui <- fluidPage(
     sidebarPanel(
       selectInput("statedex", "Select state:", state.name),
       selectInput("plottype", "Select plot:", c("cases", "delta_cases", "deaths", "delta_deaths")), width = 3,
-      dateRangeInput("daterange", "Date Range", min = "2020-01-01", start = "2020-03-05")
+      dateRangeInput("daterange", "Date Range", min = "2020-01-01", start = "2020-03-01")
     ),
     mainPanel(
       tabsetPanel(
