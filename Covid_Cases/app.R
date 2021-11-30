@@ -2,11 +2,15 @@ library(shiny)
 library(tidyverse)
 library(lubridate)
 
+covid_index_states <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
+covid_index_states$date <- as.character(covid_index_states$date)
+
 ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput("statedex", "Select state:", state.name),
-      selectInput("plottype", "Select plot:", c("cases", "delta_cases", "deaths", "delta_deaths")), width = 3
+      selectInput("plottype", "Select plot:", c("cases", "delta_cases", "deaths", "delta_deaths")), width = 3,
+      dateRangeInput("daterange", "Date Range", min = "2020-01-01", start = "2020-03-05")
     ),
     mainPanel(
       tabsetPanel(
@@ -18,16 +22,16 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  covid_index_states <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
-  covid_index_states$date <- as.character(covid_index_states$date)
   
-  state_index <- reactive(covid_index_states %>% filter(state == input$statedex) %>% 
+  state_index <- reactive({covid_index_states %>% 
+                            filter(date >= input$daterange[1] & date <= input$daterange[2]) %>% 
+                            filter(state == input$statedex) %>% 
                             mutate(delta_cases = 
                                      coalesce(cases - lag(cases, order_by = state), 1)) %>% 
                             mutate(delta_deaths = 
                                      coalesce(deaths - lag(deaths, order_by = state), 1)) %>% 
                             filter(delta_cases >= 1) # Delta > 0 to account for holidays where nothing is reported and random negative deltas
-                          )
+                          })
   
   
   output$plot <- renderPlot({
