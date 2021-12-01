@@ -1,8 +1,10 @@
 library(shiny) 
 library(tidyverse)
 library(lubridate)
+library(rsconnect)
 
 covid_index_states <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
+covid_index_counties <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
 covid_index_states$date <- as.character(covid_index_states$date)
 
 ui <- fluidPage(
@@ -14,8 +16,14 @@ ui <- fluidPage(
     ),
     mainPanel(
       tabsetPanel(
-        tabPanel("Plot", plotOutput("plot", width = "800px")),
-        tabPanel("Table", dataTableOutput("table"))
+        tabPanel("Plot", 
+                 plotOutput("plot", 
+                            width = "800px")),
+        tabPanel("Table", 
+                 dataTableOutput("table")),
+        tabPanel("Map", 
+                 plotOutput("fill")
+                 )
       )
     )
   )
@@ -51,7 +59,47 @@ server <- function(input, output, session) {
   output$table <- renderDataTable(state_index(), options = list(pageLength = 10,
                                                                 ordering = NULL))
   
+  output$map <- renderPlot(plot())
+  output$fill <- renderPlot(fill())
+    
+  cur_state <- reactive({
+    covid_index_counties %>% 
+      filter(state == input$statedex & date == Sys.Date() - 1) %>% 
+      mutate_all(., tolower)
+  })
+
+  
+  state_map <- reactive({
+    map_data("county", input$statedex)
+  })
+  
+  joined_county <- reactive({
+      inner_join(cur_state(), state_map(), by = c("county" = "subregion"))
+  })
+  
+  # Base map
+  plot <- reactive({
+    ggplot(data = joined_county(), aes(x = long, y = lat, group = group))+
+    geom_polygon(fill = NA, color = "black")+
+    coord_quickmap()+
+    theme(
+      axis.text = element_blank(),
+      axis.line = element_blank(),
+      axis.ticks = element_blank(),
+      panel.border = element_blank(),
+      panel.grid = element_blank(),
+      axis.title = element_blank()
+    )
+  })
+  
+  # Filling in map
+  fill <-reactive({ 
+    plot()+
+      geom_polygon(data = joined_county(), aes(fill = as.double(cases)), color = "black")+
+      scale_fill_distiller(palette = 8, direction = 1)+
+      labs(fill = "Total cases")
+  })
+    
 }
 
 shinyApp(ui, server) 
-
