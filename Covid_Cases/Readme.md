@@ -1,3 +1,4 @@
-Shinyapp for state COVID Cases
+### Shinyapp for state COVID Cases
 
-App can be found at https://7cbiqh-theglucru.shinyapps.io/covid_cases/
+### https://7cbiqh-theglucru.shinyapps.io/covid_cases/
+
