@@ -2,6 +2,7 @@ library(shiny)
 library(tidyverse)
 library(lubridate)
 library(rsconnect)
+library(maps)
 
 covid_index_states <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
 covid_index_counties <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
