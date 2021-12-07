@@ -10,6 +10,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+  options(scipen = 100)
   covid_index_states <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
   state_index <- reactive(covid_index_states %>% filter(state == input$statedex))
   
@@ -21,7 +22,7 @@ server <- function(input, output, session) {
            aes(x = date,
                y = cases))+
       geom_line()+
-      scale_x_date(date_breaks = "1 month",
+      scale_x_date(date_breaks = "2 months",
                    date_labels = "%m/%y")+
       scale_y_continuous(n.breaks = 15)+
       labs(x = "Date",
