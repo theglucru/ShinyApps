@@ -7,6 +7,7 @@ library(maps)
 covid_index_states <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
 covid_index_counties <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
 covid_index_states$date <- as.character(covid_index_states$date)
+options(scipen = 999)
 
 ui <- fluidPage(
   sidebarLayout(
@@ -49,7 +50,7 @@ server <- function(input, output, session) {
                y = eval(parse(text = input$plottype))))+
       geom_line()+
       theme_bw()+
-      scale_x_date(date_breaks = "1 month",
+      scale_x_date(date_breaks = "2 months",
                    date_labels = "%m/%y")+
       scale_y_continuous(n.breaks = 10)+
       labs(x = "Date",
