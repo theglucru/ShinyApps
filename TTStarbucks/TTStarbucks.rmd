@@ -1,0 +1,41 @@
+---
+title: "Starbucks Drinks"
+author: "Gary Lu"
+date: "1/3/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tidytuesdayR)
+library(knitr)
+library(kableExtra)
+```
+
+
+```{r}
+#tuesdata <- tidytuesdayR::tt_load('2021-12-21')
+starbucks <- tuesdata$starbucks
+starbucks %>% mutate(across(.cols = 6:13, .fns = as.double))
+starbucks$milk <- as.character(starbucks$milk)
+milk_type <- tibble(c(0, 1, 2, 3, 4, 5), c("none", "nonfat", "2%", "soy", "coconut", "whole"))
+starbucks$milk[starbucks$milk == 0] <- "none"
+starbucks$milk[starbucks$milk == 1] <- "nonfat"
+starbucks$milk[starbucks$milk == 2] <- "2%"
+starbucks$milk[starbucks$milk == 3] <- "Soy"
+starbucks$milk[starbucks$milk == 4] <- "Coconut"
+starbucks$milk[starbucks$milk == 5] <- "Whole"
+starbucks$whip[starbucks$whip == 0] <- "No"
+starbucks$whip[starbucks$whip == 1] <- "Yes"
+```
+
+```{r pressure, echo=FALSE}
+icedcoffee_tall <- starbucks %>% mutate(across(.cols = 6:15, .fns = as.double)) %>% # Makes all columns the same data type
+            filter(product_name == "Iced Coffee" & size == "tall" & milk == "none" & whip == "No") %>%  # Serves as the filter
+              select(-size, -milk, -whip, -serv_size_m_l, -product_name)
+
+icedcoffee_tall %>%
+    pivot_longer(cols = 1:10,
+     names_to = "nutrition",
+       values_to = "amount")
+```
