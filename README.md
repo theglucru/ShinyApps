@@ -1,4 +1,4 @@
-# Turning TidyTuesday/R misc data into Shiny Apps
+# Turning datasets into web apps
 
 ## Contents
 
