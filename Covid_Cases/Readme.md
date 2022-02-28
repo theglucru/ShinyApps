@@ -1,6 +1,8 @@
 ### Shinyapp for state COVID Cases
 
-### Aiming to keep track of the current progression of COVID-19 cases per state
+##### Background:
+
+- As a healthcare professional, I naturally found myself naturally tracking the COVID-19 cases in the US. Working in a public setting, I try to keep myself educated on the this topic and track how well the country is doing
 
 - Includes total number of cases, deaths, and reported new cases and deaths.
 
