@@ -20,3 +20,4 @@
 
 - Allows a user to enter in a letter and the position of it in a 5 letter word and displays the most common positions and letters based on that
 - The word list was extracted from using web browser developer tools 
+- Not meant to influence how people play Wordle in any way
