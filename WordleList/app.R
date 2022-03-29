@@ -34,7 +34,7 @@ ui <- fluidPage(
 server <- function(input, output) {
 
   # Create the wordlist
-  wordlist <- read_delim("wordlist.txt", delim = ",")
+  wordlist <- read_delim("https://raw.githubusercontent.com/theglucru/ShinyApps/main/WordleList/wordlist.txt", delim = ",")
   wordlist <- tibble("word" = colnames(wordlist))
   wordlist$word <- toupper(wordlist$word)
   
@@ -54,7 +54,7 @@ server <- function(input, output) {
                             slice_head(n = 5) %>% 
                             filter(pos != input$LetterPosition))
   
-  output$Table <- renderTable(workingList())
+  output$Table <- renderTable(workingList()) # used for Reference
   
   plot <- reactive(ggplot(data = workingList())+
                      geom_col(aes(x = fct_reorder(letter, -n), y = n, fill = pos), 
