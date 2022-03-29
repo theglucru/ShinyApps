@@ -15,3 +15,8 @@
 
 - Comparision of 2 drinks, with size, milk, and whipped cream, formatted to look as closely as a nutrition label as possible
 - Data is sourced from [The TidyTuesday Github](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-12-21/readme.md)
+
+### [Wordle Allowed Guesses Analysis](https://7cbiqh-theglucru.shinyapps.io/WordleList/)
+
+- Allows a user to enter in a letter and the position of it in a 5 letter word and displays the most common positions and letters based on that
+- The word list was extracted from using web browser developer tools 
